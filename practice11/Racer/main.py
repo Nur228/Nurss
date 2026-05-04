@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+from pathlib import Path
 
 pygame.init()
 
@@ -13,22 +14,25 @@ pygame.display.set_caption("Racer Game")
 
 clock = pygame.time.Clock()
 
-image_background = pygame.image.load("resources/AnimatedStreet.png")
-image_player = pygame.image.load("resources/Player.png")
-image_enemy = pygame.image.load("resources/Enemy.png")
+# Resolve resources relative to this file so the game works from any cwd.
+RESOURCES = Path(__file__).resolve().parent / "resources"
+
+image_background = pygame.image.load(str(RESOURCES / "AnimatedStreet.png"))
+image_player = pygame.image.load(str(RESOURCES / "Player.png"))
+image_enemy = pygame.image.load(str(RESOURCES / "Enemy.png"))
 
 coin_images = {
-    20: pygame.image.load("resources/20tg.png"),
-    50: pygame.image.load("resources/50tg.png"),
-    100: pygame.image.load("resources/100tg.png")
+    20: pygame.image.load(str(RESOURCES / "20tg.png")),
+    50: pygame.image.load(str(RESOURCES / "50tg.png")),
+    100: pygame.image.load(str(RESOURCES / "100tg.png")),
 }
 
-pygame.mixer.music.load("resources/background.wav")
+pygame.mixer.music.load(str(RESOURCES / "background.wav"))
 pygame.mixer.music.play(-1)
 
-sound_crash = pygame.mixer.Sound("resources/crash.wav")
-sound_get_tenge = pygame.mixer.Sound("resources/money.wav")
-sound_bip = pygame.mixer.Sound("resources/bip.wav")
+sound_crash = pygame.mixer.Sound(str(RESOURCES / "crash.wav"))
+sound_get_tenge = pygame.mixer.Sound(str(RESOURCES / "money.wav"))
+sound_bip = pygame.mixer.Sound(str(RESOURCES / "bip.wav"))
 
 font_game_over = pygame.font.SysFont("Verdana", 60)
 image_game_over = font_game_over.render("Game Over", True, "black")

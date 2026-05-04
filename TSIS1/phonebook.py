@@ -5,11 +5,19 @@ from pathlib import Path
 from connect import get_connection
 
 
+# Anchor file lookups to this script so the menu works from any cwd.
+BASE_DIR = Path(__file__).resolve().parent
+
+
 def run_sql_file(filename):
     conn = get_connection()
     cur = conn.cursor()
 
-    with open(filename, "r", encoding="utf-8") as file:
+    sql_path = Path(filename)
+    if not sql_path.is_absolute():
+        sql_path = BASE_DIR / sql_path
+
+    with open(sql_path, "r", encoding="utf-8") as file:
         cur.execute(file.read())
 
     conn.commit()
@@ -262,6 +270,10 @@ def export_json():
     if not filename:
         filename = "contacts.json"
 
+    out_path = Path(filename)
+    if not out_path.is_absolute():
+        out_path = BASE_DIR / out_path
+
     conn = get_connection()
     cur = conn.cursor()
 
@@ -297,23 +309,27 @@ def export_json():
             "phones": phones
         })
 
-    with open(filename, "w", encoding="utf-8") as file:
+    with open(out_path, "w", encoding="utf-8") as file:
         json.dump(contacts, file, indent=4)
 
     cur.close()
     conn.close()
 
-    print(f"Exported to {filename}")
+    print(f"Exported to {out_path}")
 
 
 def import_json():
     filename = input("JSON filename to import: ").strip()
 
-    if not Path(filename).exists():
+    in_path = Path(filename)
+    if not in_path.is_absolute():
+        in_path = BASE_DIR / in_path
+
+    if not in_path.exists():
         print("File not found")
         return
 
-    with open(filename, "r", encoding="utf-8") as file:
+    with open(in_path, "r", encoding="utf-8") as file:
         contacts = json.load(file)
 
     conn = get_connection()
@@ -366,14 +382,18 @@ def import_json():
 def import_csv():
     filename = input("CSV filename, example contacts.csv: ").strip()
 
-    if not Path(filename).exists():
+    in_path = Path(filename)
+    if not in_path.is_absolute():
+        in_path = BASE_DIR / in_path
+
+    if not in_path.exists():
         print("File not found")
         return
 
     conn = get_connection()
     cur = conn.cursor()
 
-    with open(filename, "r", encoding="utf-8") as file:
+    with open(in_path, "r", encoding="utf-8") as file:
         reader = csv.DictReader(file)
 
         for row in reader:

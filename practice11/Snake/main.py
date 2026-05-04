@@ -41,7 +41,7 @@ class Point:
         self.x = x
         self.y = y
 
-    def str(self):
+    def __str__(self):
         return f"{self.x}, {self.y}"
 
 class Snake:
@@ -130,23 +130,6 @@ class Food:
                 self.pos.y = y
                 self.generate_random_type()
                 self.spawn_time = time.time()
-                break
-
-   
-   
-   
-    def generate_random_pos(self, snake):
-        while True:
-            x = random.randint(0, WIDTH // CELL - 1)
-            y = random.randint(0, HEIGHT // CELL - 1)
-            check = True
-            for i in snake.body:
-                if i.x == x and i.y == y:
-                    check = False
-                    break
-            if check:
-                self.pos.x = x
-                self.pos.y = y
                 break
 
 

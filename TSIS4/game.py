@@ -24,7 +24,8 @@ BLUE = (0, 100, 255)
 PURPLE = (160, 0, 200)
 ORANGE = (255, 140, 0)
 
-SETTINGS_FILE = Path("settings.json")
+# Anchor the settings file next to this script so it works from any cwd.
+SETTINGS_FILE = Path(__file__).resolve().parent / "settings.json"
 
 DEFAULT_SETTINGS = {
     "snake_color": [255, 0, 0],

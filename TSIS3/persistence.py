@@ -1,8 +1,10 @@
 import json
 from pathlib import Path
 
-SETTINGS_FILE = Path("settings.json")
-LEADERBOARD_FILE = Path("leaderboard.json")
+# Anchor data files next to this script so the game works from any cwd.
+BASE_DIR = Path(__file__).resolve().parent
+SETTINGS_FILE = BASE_DIR / "settings.json"
+LEADERBOARD_FILE = BASE_DIR / "leaderboard.json"
 
 DEFAULT_SETTINGS = {
     "sound": True,

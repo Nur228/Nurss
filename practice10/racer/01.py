@@ -1,23 +1,28 @@
 import pygame
 import random
 import time
+from pathlib import Path
 
-pygame.init()
+pygame.init() # initializes all the pygame sub-modules
 
 WIDTH = 400
 HEIGHT = 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((WIDTH, HEIGHT)) # creating a game window
+# set_mode() takes a tuple as an argument
 
-image_background = pygame.image.load('resources/AnimatedStreet.png')
-image_player = pygame.image.load('resources/Player.png')
-image_enemy = pygame.image.load('resources/Enemy.png')
-image_tenge = pygame.image.load('resources/Tenge.png')
-#pygame.mixer.music.load('resources/background.wav')
+# Resolve resources relative to this script so the file works from any cwd.
+RESOURCES = Path(__file__).resolve().parent / "resources"
+
+image_background = pygame.image.load(str(RESOURCES / "AnimatedStreet.png"))
+image_player = pygame.image.load(str(RESOURCES / "Player.png"))
+image_enemy = pygame.image.load(str(RESOURCES / "Enemy.png"))
+image_tenge = pygame.image.load(str(RESOURCES / "Tenge.png"))
+#pygame.mixer.music.load(str(RESOURCES / 'background.wav'))
 #pygame.mixer.music.play(-1)
 
-sound_crash = pygame.mixer.Sound('resources/crash.wav')
-sound_get_tenge = pygame.mixer.Sound('resources/money.wav')
-sound_bip = pygame.mixer.Sound('resources/bip.wav')
+sound_crash = pygame.mixer.Sound(str(RESOURCES / "crash.wav"))
+sound_get_tenge = pygame.mixer.Sound(str(RESOURCES / "money.wav"))
+sound_bip = pygame.mixer.Sound(str(RESOURCES / "bip.wav"))
 font = pygame.font.SysFont("Verdana", 60)
 image_game_over = font.render("Game Over", True, "black")
 image_game_over_rect = image_game_over.get_rect(center = (WIDTH // 2, HEIGHT // 2))
@@ -32,6 +37,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx = WIDTH // 2
         self.rect.bottom = HEIGHT
         self.speed = 5
+        # or
+        # self.rect.midbottom = (WIDTH // 2, HEIGHT)
 
     def move(self):
         keys = pygame.key.get_pressed()
@@ -61,6 +68,8 @@ class Enemy(pygame.sprite.Sprite):
         self.image = image_enemy
         self.rect = self.image.get_rect()
         self.speed = 7
+        # or
+        # self.rect.midbottom = (WIDTH // 2, HEIGHT)
 
     def generate_random_rect(self):
         self.rect.left = random.randint(0, WIDTH - self.rect.w)
@@ -84,6 +93,7 @@ class Money(pygame.sprite.Sprite):
 
 running = True
 
+# this object allows us to set the FPS
 clock = pygame.time.Clock()
 FPS = 60
 
@@ -100,9 +110,9 @@ enemy_sprites.add(enemy)
 tenge_sprites.add(tenge)
 
 score = 0
-while running:
+while running: # game loop
     
-    for event in pygame.event.get():
+    for event in pygame.event.get(): # event loop
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
@@ -139,7 +149,7 @@ while running:
         time.sleep(2)
     
     
-    pygame.display.flip()
-    clock.tick(FPS)
+    pygame.display.flip() # updates the screen
+    clock.tick(FPS) # sets the FPS
 
 pygame.quit()

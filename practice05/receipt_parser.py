@@ -1,10 +1,14 @@
 import re
 import json
+from pathlib import Path
 
 def price_change(price_str):
     return float(price_str.replace(" ", "").replace(",", "."))
 
-with open("raw.txt", "r", encoding="utf-8") as f:
+# Resolve raw.txt relative to this file so the script works from any cwd.
+RAW_FILE = Path(__file__).resolve().parent / "raw.txt"
+
+with open(RAW_FILE, "r", encoding="utf-8") as f:
     text = f.read()
 
 price_patt = r"\d[\d ]*,\d{2}"

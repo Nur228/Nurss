@@ -24,7 +24,8 @@ CYAN = (0, 200, 255)
 
 LANES = [100, 200, 300, 400]
 FINISH_DISTANCE = 3000
-ASSET_DIR = Path("assets")
+# Anchor assets next to this script so the game works from any cwd.
+ASSET_DIR = Path(__file__).resolve().parent / "assets"
 
 DIFFICULTY_DATA = {
     "easy": {

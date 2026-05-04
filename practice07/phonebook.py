@@ -1,6 +1,12 @@
 import csv
+from pathlib import Path
+
 import psycopg2
 from config import get_config
+
+
+# Resolve the CSV next to this script so the import works from any cwd.
+CONTACTS_CSV = Path(__file__).resolve().parent / "contacts.csv"
 
 
 def get_connection():
@@ -50,7 +56,7 @@ def insert_from_csv():
     conn = get_connection()
     cur = conn.cursor()
 
-    with open("contacts.csv", newline="", encoding="utf-8") as file:
+    with open(CONTACTS_CSV, newline="", encoding="utf-8") as file:
         reader = csv.DictReader(file)
         for row in reader:
             cur.execute(

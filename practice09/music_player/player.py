@@ -1,12 +1,17 @@
 import pygame
 import os
+from pathlib import Path
+
+
+# Resolve music paths relative to this file so the player works from any cwd.
+MUSIC_DIR = Path(__file__).resolve().parent / "music"
 
 
 class Music:
     def __init__(self):
         self.playlist = [
-            r"/Users/apple/Desktop/pp2-assignments/practice09/music_player/music/Caliente.mp3",
-            r"/Users/apple/Desktop/pp2-assignments/practice09/music_player/music/Planovaia.mp3"
+            str(MUSIC_DIR / "Caliente.mp3"),
+            str(MUSIC_DIR / "Planovaia.mp3"),
         ]
         self.current_track = 0
         pygame.mixer.music.load(self.playlist[self.current_track])

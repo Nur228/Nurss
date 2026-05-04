@@ -128,13 +128,14 @@ def get_draw_color():
 
 def save_canvas():
 
-    assets_dir = Path("assets")
+    # Anchor the assets dir next to this script so saves work from any cwd.
+    assets_dir = Path(__file__).resolve().parent / "assets"
     assets_dir.mkdir(exist_ok=True)
 
     now = datetime.datetime.now()
     filename = assets_dir / f"canvas_{now.strftime('%Y%m%d_%H%M%S')}.png"
-    
-    pygame.image.save(base_layer, filename)
+
+    pygame.image.save(base_layer, str(filename))
     print(f"Saved: {filename}")
 
 
